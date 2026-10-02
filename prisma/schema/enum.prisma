@@ -1,0 +1,32 @@
+enum UserRole {
+  USER
+  ADMIN
+}
+enum UserStatus {
+  ACTIVE
+  BLOCK
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+}
+
+enum Language {
+  PYTHON
+  JAVASCRIPT
+  C
+  CPP
+  JAVA
+}
+
+enum Verdict {
+  PENDING
+  ACCEPTED
+  WRONG_ANSWER
+  COMPILE_ERROR
+  RUNTIME_ERROR
+  TIME_LIMIT_EXCEEDED
+  INTERNAL_ERROR
+}

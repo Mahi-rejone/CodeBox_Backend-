@@ -1,0 +1,63 @@
+model Problem {
+  id           Int               @id @default(autoincrement())
+  slug         String            @unique
+  title        String
+  description  String
+  difficulty   Difficulty
+  functionName String
+  published    Boolean           @default(false)
+  createdAt    DateTime          @default(now())
+  tags         Tag[]
+  templates    ProblemTemplate[]
+  testCases    TestCase[]
+  submissions  Submission[]
+}
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  problems Problem[]
+}
+
+model ProblemTemplate {
+  id          Int      @id @default(autoincrement())
+  problemId   Int
+  language    Language
+  prelude     String   @default("")
+  starterCode String
+  driverCode  String
+  problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([problemId, language])
+}
+
+model TestCase {
+  id             Int     @id @default(autoincrement())
+  problemId      Int
+  position       Int     @default(0)
+  input          String
+  expectedOutput String
+  isSample       Boolean @default(false)
+  problem        Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([problemId])
+}
+
+model Submission {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  problemId   Int
+  language    Language
+  code        String
+  verdict     Verdict  @default(PENDING)
+  passedCount Int      @default(0)
+  totalCount  Int      @default(0)
+  runtimeMs   Int?
+  errorOutput String?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem     Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@index([userId, problemId])
+  @@index([userId, verdict])
+}

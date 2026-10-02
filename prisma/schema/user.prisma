@@ -1,0 +1,39 @@
+model User {
+  id                     String                 @id @default(uuid())
+  username               String                 @unique
+  email                  String                 @unique
+  passwordHash           String?
+  githubId               String?                @unique
+  role                   UserRole               @default(USER)
+  isDeleted              Boolean                @default(false)
+  status                 UserStatus             @default(ACTIVE)
+  createdAt              DateTime               @default(now())
+  updatedAt              DateTime               @updatedAt
+  profileId              String?                @unique
+  fullName               String                 @default("")
+  isVerified             Boolean                @default(false)
+  verifyCode             String?
+  verifyCodeExpiry       DateTime?
+  resetPasswordToken     String?
+  resetPasswordExpiry    DateTime?
+  submissions            Submission[]
+  profile                UserProfile?           @relation(fields: [profileId], references: [id])
+
+  @@map("Users")
+}
+
+model UserProfile {
+  id               String     @id @default(uuid())
+  img              String?
+  phoneNumber      String
+  numberOfProblemsSolved Int        @default(0)
+  state            String
+  district         String
+  town             String
+  address          String?
+  dateOfBirth      DateTime
+  gender           String
+  user             User?
+
+  @@map("UserProfiles")
+}
